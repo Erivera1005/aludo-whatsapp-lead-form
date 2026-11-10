@@ -88,7 +88,7 @@ function Index() {
             <p className="eyebrow">Pregunta {step + 1} de 2</p>
             <h1 className="title">
               {step === 0 ? (
-                <>¿Cómo se llama tu <em>peludito</em>?</>
+                <>¿Cómo se llama tu <em>Peludito</em>?</>
               ) : (
                 <>¿Qué raza es <em>{n}</em>?</>
               )}
