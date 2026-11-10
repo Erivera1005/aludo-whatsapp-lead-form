@@ -120,7 +120,7 @@ function Index() {
               <span className="loader-paw">🐾</span>
             </div>
             <h1 className="title">
-              Ahora escríbenos por WhatsApp para ver cómo <em>{n}</em> podría hablar gracias al collar de ALUDO
+              ¡Escríbenos y descubre cómo <em>{n}</em> podría hablar gracias a este collar!
             </h1>
             <div className="bar"><span style={{ transform: `scaleX(${progress})` }} /></div>
             <a href={waUrl} className={progress >= 1 ? "cta wa pulse" : "cta wa"} rel="noopener">
