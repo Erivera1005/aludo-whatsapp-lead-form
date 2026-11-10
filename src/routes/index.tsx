@@ -2,6 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import logoUrl from "../assets/aludo-logo.webp";
 
+declare const __SITE_URL__: string;
+const OG_IMAGE = `${__SITE_URL__}/og-image.jpg`;
+
 const WHATSAPP_NUMBER = "573128642686";
 
 export const Route = createFileRoute("/")({
@@ -13,6 +16,10 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "Responde 2 preguntas y descubre cómo tu mascota podría hablar con el collar ALUDO." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:image", content: OG_IMAGE },
     ],
   }),
   component: Index,
