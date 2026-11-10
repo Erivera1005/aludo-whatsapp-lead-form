@@ -10,7 +10,7 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 const siteHost =
-  process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || "";
+  process.env["VERCEL_PROJECT_PRODUCTION_URL"] || process.env["VERCEL_URL"] || "";
 
 export default defineConfig({
   vite: {
