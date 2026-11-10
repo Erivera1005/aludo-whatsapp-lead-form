@@ -189,7 +189,8 @@ body { font-family: var(--font-sans); -webkit-tap-highlight-color: transparent; 
 .cta .arrow { transition: transform .25s; } .cta:not(:disabled):hover .arrow { transform: translateX(4px); }
 .cta.wa { background: var(--wa); color: var(--brand); }
 .pulse { animation: rise .6s both, pulse 1.8s ease-in-out .6s infinite !important; }
-.back { z-index: 1; margin-top: 1rem; background: none; border: 0; color: var(--muted-foreground); font: inherit; font-size: .9rem; cursor: pointer; }
+.back { z-index: 1; margin-top: 1rem; background: none; border: 0; color: color-mix(in oklab, var(--brand) 55%, var(--muted-foreground)); font: inherit; font-size: .9rem; cursor: pointer; padding: .75rem .5rem; min-height: 2.75rem; border-radius: 9999px; transition: color .3s, background .3s; }
+.back:hover, .back:focus-visible { color: var(--brand); background: color-mix(in oklab, var(--brand) 7%, transparent); }
 .loader { position: relative; width: 6rem; height: 6rem; display: grid; place-items: center; }
 .ring { position: absolute; inset: 0; border-radius: 9999px; border: 3px solid var(--brand); opacity: 0; animation: ripple 2s ease-out infinite; }
 .ring.r2 { animation-delay: 1s; }

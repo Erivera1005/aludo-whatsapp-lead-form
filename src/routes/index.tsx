@@ -2,8 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import logoAsset from "../assets/aludo-logo.webp.asset.json";
 
-// TODO: reemplazar con el número real de WhatsApp de ALUDO (formato internacional, sin +)
-const WHATSAPP_NUMBER = "570000000000";
+const WHATSAPP_NUMBER = "573128642686";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -131,8 +130,14 @@ function Index() {
         )}
       </section>
 
-      {step === 1 && (
-        <button className="back" onClick={() => setStep(0)}>← Cambiar nombre</button>
+      {step > 0 && (
+        <button
+          className="back"
+          onClick={() => setStep(step === 2 ? 1 : 0)}
+          aria-label={step === 2 ? "Volver a la pregunta anterior" : "Cambiar el nombre"}
+        >
+          ← {step === 2 ? "Volver a la pregunta anterior" : "Cambiar nombre"}
+        </button>
       )}
     </main>
   );
