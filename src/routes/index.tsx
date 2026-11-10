@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import logoAsset from "../assets/aludo-logo.webp.asset.json";
+import logoUrl from "../assets/aludo-logo.webp";
 
 const WHATSAPP_NUMBER = "573128642686";
 
@@ -66,7 +66,7 @@ function Index() {
       <header className="brand fade-down">
         <img
           className="brand-logo"
-          src={logoAsset.url}
+          src={logoUrl}
           alt="ALUDO"
           width={800}
           height={177}
