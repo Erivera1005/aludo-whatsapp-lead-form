@@ -166,7 +166,8 @@ body { font-family: var(--font-sans); -webkit-tap-highlight-color: transparent; 
 .blob { position: absolute; border-radius: 9999px; filter: blur(50px); opacity: .18; background: var(--brand); will-change: transform; pointer-events: none; }
 .blob-a { width: 18rem; height: 18rem; top: -6rem; right: -6rem; animation: float 9s ease-in-out infinite; }
 .blob-b { width: 14rem; height: 14rem; bottom: -5rem; left: -5rem; opacity: .1; animation: float 11s ease-in-out infinite reverse; }
-.brand { font-weight: 800; letter-spacing: .35em; color: var(--brand); font-size: 1.1rem; z-index: 1; }
+.brand { width: clamp(9.5rem, 42vw, 12rem); z-index: 1; }
+.brand-logo { display: block; width: 100%; height: auto; }
 .dots { display: flex; gap: .4rem; margin: 1.25rem 0 0; z-index: 1; }
 .dot { width: .5rem; height: .5rem; border-radius: 9999px; background: var(--border); transition: width .4s cubic-bezier(.2,.8,.2,1), background .4s; }
 .dot.on { width: 1.6rem; background: var(--brand); }

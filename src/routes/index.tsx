@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import logoAsset from "../assets/aludo-logo.webp.asset.json";
 
 // TODO: reemplazar con el número real de WhatsApp de ALUDO (formato internacional, sin +)
 const WHATSAPP_NUMBER = "570000000000";
@@ -63,7 +64,17 @@ function Index() {
       <div className="blob blob-a" aria-hidden />
       <div className="blob blob-b" aria-hidden />
 
-      <header className="brand fade-down">ALUDO</header>
+      <header className="brand fade-down">
+        <img
+          className="brand-logo"
+          src={logoAsset.url}
+          alt="ALUDO"
+          width={800}
+          height={177}
+          fetchPriority="high"
+          decoding="async"
+        />
+      </header>
 
       <div className="dots" aria-hidden>
         {[0, 1, 2].map((i) => (
