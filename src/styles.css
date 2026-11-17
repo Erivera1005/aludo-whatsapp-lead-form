@@ -183,10 +183,9 @@ body { font-family: var(--font-sans); -webkit-tap-highlight-color: transparent; 
 .cover-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
 .cover-brand { position: absolute; z-index: 1; top: 2.4rem; left: 50%; translate: -50% 0; width: clamp(7rem, 30vw, 9rem); filter: drop-shadow(0 1px 1px oklch(0.19 0.09 268 / .6)) drop-shadow(0 3px 8px oklch(0.19 0.09 268 / .25)); }
 
-/* Centered column. The headline + badge pair is nudged a little to the left;
-   the WhatsApp button stays on the exact center line. */
+/* Centered column: headline, badge and button all sit on the screen's center line. */
 .cover-center { position: absolute; z-index: 1; top: 50%; left: 50%; translate: -50% -50%; width: min(20rem, 86vw); display: flex; flex-direction: column; align-items: center; gap: 1.1rem; text-align: center; }
-.cover-head { display: flex; flex-direction: column; align-items: center; gap: .7rem; translate: -4vw 0; }
+.cover-head { display: flex; flex-direction: column; align-items: center; gap: .7rem; }
 .cover-head > *, .cover-cta { animation: rise .7s cubic-bezier(.2,.8,.2,1) both; }
 .cover-head > *:nth-child(2) { animation-delay: .12s; }
 .cover-cta { animation-delay: .24s; }
@@ -227,7 +226,7 @@ a.cover-cta { text-decoration: none; }
 @media (min-width: 900px) {
   .cover-brand { top: 2.75rem; }
   .cover-center { width: 34rem; gap: 1.3rem; }
-  .cover-head { translate: -2.5vw 0; gap: .9rem; }
+  .cover-head { gap: .9rem; }
   .cover-title { font-size: 3.6rem; }
   .cover-limited { font-size: 1.1rem; }
   .cover-cta { font-size: 1.3rem; padding: .8rem 1.6rem; }
