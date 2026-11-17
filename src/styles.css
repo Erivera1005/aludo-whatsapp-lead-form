@@ -11,6 +11,16 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Display font, self-hosted: Fredoka pinned to 75% width + weight 700, Latin subset
+   (src/assets/fonts, SIL OFL). Preloaded from __root.tsx. */
+@font-face {
+  font-family: "Fredoka Condensed";
+  src: url("./assets/fonts/fredoka-condensed-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /*
  * Design system definition.
  *
@@ -46,7 +56,8 @@
   --color-primary: var(--primary);
   --color-brand: var(--brand);
   --color-wa: var(--wa);
-  --font-sans: "Outfit", system-ui, sans-serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Fredoka Condensed", "Arial Narrow", system-ui, sans-serif;
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -162,50 +173,71 @@
 
 body { font-family: var(--font-sans); -webkit-tap-highlight-color: transparent; }
 
-.funnel { position: relative; min-height: 100svh; overflow: hidden; display: flex; flex-direction: column; align-items: center; padding: 1.5rem 1.25rem 2rem; background: linear-gradient(180deg, var(--background), var(--secondary)); }
-.blob { position: absolute; border-radius: 9999px; filter: blur(50px); opacity: .18; background: var(--brand); will-change: transform; pointer-events: none; }
-.blob-a { width: 18rem; height: 18rem; top: -6rem; right: -6rem; animation: float 9s ease-in-out infinite; }
-.blob-b { width: 14rem; height: 14rem; bottom: -5rem; left: -5rem; opacity: .1; animation: float 11s ease-in-out infinite reverse; }
-.brand { width: clamp(9.5rem, 42vw, 12rem); z-index: 1; }
-.brand-logo { display: block; width: 100%; height: auto; }
-.dots { display: flex; gap: .4rem; margin: 1.25rem 0 0; z-index: 1; }
-.dot { width: .5rem; height: .5rem; border-radius: 9999px; background: var(--border); transition: width .4s cubic-bezier(.2,.8,.2,1), background .4s; }
-.dot.on { width: 1.6rem; background: var(--brand); }
-.card { z-index: 1; width: 100%; max-width: 26rem; margin: auto 0; background: var(--card); border: 1px solid var(--border); border-radius: 1.75rem; padding: 2rem 1.5rem; box-shadow: 0 30px 60px -30px color-mix(in oklab, var(--brand) 35%, transparent); }
-.stack { display: flex; flex-direction: column; gap: 1rem; }
-.stack.center { align-items: center; text-align: center; }
-.stack > * { animation: rise .6s cubic-bezier(.2,.8,.2,1) both; }
-.stack > *:nth-child(2) { animation-delay: .06s } .stack > *:nth-child(3) { animation-delay: .12s }
-.stack > *:nth-child(4) { animation-delay: .18s } .stack > *:nth-child(5) { animation-delay: .24s }
-.paw { font-size: 2rem; display: inline-block; }
-.eyebrow { font-size: .75rem; text-transform: uppercase; letter-spacing: .18em; color: var(--muted-foreground); font-weight: 600; }
-.title { font-size: clamp(1.6rem, 7vw, 2.1rem); line-height: 1.15; font-weight: 700; color: var(--brand); text-wrap: balance; }
-.title em { font-style: normal; background: linear-gradient(transparent 62%, color-mix(in oklab, var(--brand) 14%, transparent) 62%); }
-.field { width: 100%; font: inherit; font-size: 1.15rem; padding: 1rem 1.1rem; border-radius: 1rem; border: 2px solid var(--border); background: var(--secondary); color: var(--foreground); outline: none; transition: border-color .25s, box-shadow .25s, background .25s; }
-.field:focus { border-color: var(--brand); background: var(--background); box-shadow: 0 0 0 4px color-mix(in oklab, var(--brand) 12%, transparent); }
-.cta { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; width: 100%; padding: 1.05rem; border-radius: 1rem; border: 0; font: inherit; font-weight: 700; font-size: 1.05rem; background: var(--brand); color: var(--brand-foreground); text-decoration: none; cursor: pointer; transition: transform .15s, opacity .25s; }
-.cta:active { transform: scale(.97); }
-.cta:disabled { opacity: .35; cursor: not-allowed; }
-.cta .arrow { transition: transform .25s; } .cta:not(:disabled):hover .arrow { transform: translateX(4px); }
-.cta.wa { background: var(--wa); color: var(--brand); }
-.pulse { animation: rise .6s both, pulse 1.8s ease-in-out .6s infinite !important; }
-.back { z-index: 1; margin-top: 1rem; background: none; border: 0; color: color-mix(in oklab, var(--brand) 55%, var(--muted-foreground)); font: inherit; font-size: .9rem; cursor: pointer; padding: .75rem .5rem; min-height: 2.75rem; border-radius: 9999px; transition: color .3s, background .3s; }
-.back:hover, .back:focus-visible { color: var(--brand); background: color-mix(in oklab, var(--brand) 7%, transparent); }
-.loader { position: relative; width: 6rem; height: 6rem; display: grid; place-items: center; }
-.ring { position: absolute; inset: 0; border-radius: 9999px; border: 3px solid var(--brand); opacity: 0; animation: ripple 2s ease-out infinite; }
-.ring.r2 { animation-delay: 1s; }
-.loader-paw { font-size: 2.4rem; animation: bob 1.2s ease-in-out infinite; }
-.bar { width: 100%; height: .4rem; border-radius: 9999px; background: var(--secondary); overflow: hidden; }
-.bar span { display: block; height: 100%; background: var(--brand); transform-origin: left; }
-.enter { animation: enter .55s cubic-bezier(.2,.8,.2,1) both; }
 .fade-down { animation: fadeDown .6s ease both; }
-.bob { animation: rise .6s both, bob 1.6s ease-in-out .6s infinite; }
 
-@keyframes enter { from { opacity: 0; transform: translateY(24px) scale(.97); } }
+/* ---------- Portada (cover) ---------- */
+/* Minimal: the collar video fills the screen and one small block sits in the middle.
+   Type is Fredoka condensed (75% width, bold, caps), close to "Matcha Style",
+   with the brand navy #000637 (--brand). */
+.cover { position: relative; height: 100svh; min-height: 32rem; overflow: hidden; background: oklch(0.952 0 0); }
+.cover-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.cover-brand { position: absolute; z-index: 1; top: 2.4rem; left: 50%; translate: -50% 0; width: clamp(7rem, 30vw, 9rem); filter: drop-shadow(0 1px 1px oklch(0.19 0.09 268 / .6)) drop-shadow(0 3px 8px oklch(0.19 0.09 268 / .25)); }
+
+/* Centered column. The headline + badge pair is nudged a little to the left;
+   the WhatsApp button stays on the exact center line. */
+.cover-center { position: absolute; z-index: 1; top: 50%; left: 50%; translate: -50% -50%; width: min(20rem, 86vw); display: flex; flex-direction: column; align-items: center; gap: 1.1rem; text-align: center; }
+.cover-head { display: flex; flex-direction: column; align-items: center; gap: .7rem; translate: -4vw 0; }
+.cover-head > *, .cover-cta { animation: rise .7s cubic-bezier(.2,.8,.2,1) both; }
+.cover-head > *:nth-child(2) { animation-delay: .12s; }
+.cover-cta { animation-delay: .24s; }
+
+.cover-title, .cover-limited, .cover-cta { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; }
+
+/* White letters, tight but readable spacing, thin soft navy edge */
+.cover-title { font-size: clamp(2.2rem, 10.4vw, 2.75rem); line-height: .98; letter-spacing: -.015em; color: oklch(1 0 0); text-wrap: balance; -webkit-text-stroke: 2px var(--brand); paint-order: stroke fill; text-shadow: 0 2px 10px oklch(0.19 0.09 268 / .3); }
+
+/* Same type, white on navy. Only motion: a slow float. */
+.cover-limited { display: inline-block; padding: .3rem .95rem .32rem; border-radius: 9999px; background: var(--brand); color: oklch(1 0 0); font-size: 1rem; line-height: 1.1; letter-spacing: .02em; animation: rise .7s cubic-bezier(.2,.8,.2,1) .12s both, drift 3.2s ease-in-out .9s infinite !important; }
+
+.cover-cta { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; padding: .7rem 1.3rem; border: 0; border-radius: 9999px; background: var(--brand); color: oklch(1 0 0); font-size: 1.15rem; line-height: 1.1; letter-spacing: .01em; white-space: nowrap; cursor: pointer; transition: transform .15s; }
+.cover-cta:active { transform: scale(.97); }
+/* WhatsApp glyph drawn in the button's own color */
+.cover-wa { width: 1.25rem; height: 1.25rem; flex-shrink: 0; background: currentColor; -webkit-mask: var(--wa-glyph) center / contain no-repeat; mask: var(--wa-glyph) center / contain no-repeat; }
+
+/* ---------- Preguntas + WhatsApp: same shell and look as the cover ---------- */
+.step { top: 46%; }
+.cover-title em { font-style: normal; }
+.step-title-long { font-size: clamp(1.75rem, 8vw, 2.15rem); }
+a.cover-cta { text-decoration: none; }
+.cover-cta:disabled { opacity: .45; cursor: not-allowed; }
+.step-arrow { transition: transform .25s; }
+.cover-cta:not(:disabled):hover .step-arrow { transform: translateX(3px); }
+.cover-cta.is-ready { animation: rise .7s cubic-bezier(.2,.8,.2,1) .24s both, drift 3.2s ease-in-out infinite; }
+
+.step-field { width: 100%; max-width: 17rem; padding: .75rem 1.1rem; border: 2px solid var(--brand); border-radius: 9999px; background: oklch(1 0 0 / .94); color: var(--brand); font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; text-align: center; outline: none; animation: rise .7s cubic-bezier(.2,.8,.2,1) .18s both; transition: box-shadow .25s; }
+.step-field::placeholder { color: oklch(0.19 0.09 268 / .4); }
+.step-field:focus { box-shadow: 0 0 0 4px oklch(0.19 0.09 268 / .15); }
+
+.step-bar { width: min(13rem, 60vw); height: .3rem; border-radius: 9999px; background: oklch(1 0 0 / .8); box-shadow: 0 0 0 1px oklch(0.19 0.09 268 / .15); overflow: hidden; animation: rise .7s cubic-bezier(.2,.8,.2,1) .18s both; }
+.step-bar span { display: block; height: 100%; background: var(--brand); transform-origin: left; }
+
+.step-back { min-height: 2.5rem; padding: .45rem 1rem; border: 0; border-radius: 9999px; background: oklch(1 0 0 / .8); color: var(--brand); font-family: var(--font-display); font-weight: 700; font-size: .9rem; letter-spacing: .03em; text-transform: uppercase; cursor: pointer; animation: rise .7s cubic-bezier(.2,.8,.2,1) .3s both; transition: background .25s; }
+.step-back:hover, .step-back:focus-visible { background: oklch(1 0 0 / .95); }
+
+@media (min-width: 900px) {
+  .cover-brand { top: 2.75rem; }
+  .cover-center { width: 34rem; gap: 1.3rem; }
+  .cover-head { translate: -2.5vw 0; gap: .9rem; }
+  .cover-title { font-size: 3.6rem; }
+  .cover-limited { font-size: 1.1rem; }
+  .cover-cta { font-size: 1.3rem; padding: .8rem 1.6rem; }
+  .step { top: 50%; }
+  .step-title-long { font-size: 2.8rem; }
+  .step-field { max-width: 20rem; font-size: 1.25rem; }
+}
+
+@keyframes drift { 50% { transform: translateY(-4px); } }
+
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
 @keyframes fadeDown { from { opacity: 0; transform: translateY(-10px); } }
-@keyframes float { 50% { transform: translate(-20px, 25px) scale(1.08); } }
-@keyframes bob { 50% { transform: translateY(-6px) rotate(-6deg); } }
-@keyframes ripple { 0% { transform: scale(.5); opacity: .6; } 100% { transform: scale(1.4); opacity: 0; } }
-@keyframes pulse { 50% { transform: scale(1.03); box-shadow: 0 0 0 10px color-mix(in oklab, var(--wa) 20%, transparent); } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

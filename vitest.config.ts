@@ -4,6 +4,8 @@ import path from "node:path";
 
 export default defineConfig({
   plugins: [react()],
+  // vite.config.ts defines this for the app build; tests import routes that read it.
+  define: { __SITE_URL__: JSON.stringify("") },
   test: {
     environment: "jsdom",
     globals: true,

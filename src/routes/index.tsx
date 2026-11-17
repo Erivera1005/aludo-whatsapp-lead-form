@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from "react";
 import logoUrl from "../assets/aludo-logo.webp";
+import coverVideoUrl from "../assets/portada-collar.mp4";
+import coverPosterUrl from "../assets/portada-poster.webp";
+import whatsappGlyphUrl from "../assets/whatsapp-glyph.png";
 
 declare const __SITE_URL__: string;
 const OG_IMAGE = `${__SITE_URL__}/og-image.jpg`;
@@ -11,9 +14,16 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "ALUDO — Descubre cómo tu peludito podría hablar" },
-      { name: "description", content: "Cuéntanos sobre tu peludito y descubre cómo el collar ALUDO le da voz." },
+      {
+        name: "description",
+        content: "Cuéntanos sobre tu peludito y descubre cómo el collar ALUDO le da voz.",
+      },
       { property: "og:title", content: "ALUDO — Dale voz a tu peludito" },
-      { property: "og:description", content: "Responde 2 preguntas y descubre cómo tu mascota podría hablar con el collar ALUDO." },
+      {
+        property: "og:description",
+        content:
+          "Responde 2 preguntas y descubre cómo tu mascota podría hablar con el collar ALUDO.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { property: "og:image", content: OG_IMAGE },
@@ -21,18 +31,27 @@ export const Route = createFileRoute("/")({
       { property: "og:image:height", content: "630" },
       { name: "twitter:image", content: OG_IMAGE },
     ],
+    links: [
+      // First frame of the cover video (~13 KB): fetched first so the collar paints
+      // immediately; the 500 KB video streams in behind it.
+      { rel: "preload", as: "image", href: coverPosterUrl, fetchPriority: "high" },
+    ],
   }),
   component: Index,
 });
 
-type Step = 0 | 1 | 2;
+// -1 = portada (cover), 0 = pregunta 1, 1 = pregunta 2, 2 = WhatsApp
+type Step = -1 | 0 | 1 | 2;
+
+// WhatsApp glyph drawn as a mask, so it takes the button's text color
+const waGlyph = { "--wa-glyph": `url(${whatsappGlyphUrl})` } as CSSProperties;
 
 function clean(v: string) {
   return v.replace(/[<>]/g, "").trim().slice(0, 40);
 }
 
 function Index() {
-  const [step, setStep] = useState<Step>(0);
+  const [step, setStep] = useState<Step>(-1);
   const [name, setName] = useState("");
   const [breed, setBreed] = useState("");
   const [progress, setProgress] = useState(0);
@@ -65,86 +84,124 @@ function Index() {
     else if (step === 1 && clean(breed)) setStep(2);
   }
 
+  // One shell for every step: the collar video and logo stay mounted (the video keeps
+  // playing), only the centered block changes.
   return (
-    <main className="funnel">
-      <div className="blob blob-a" aria-hidden />
-      <div className="blob blob-b" aria-hidden />
+    <main className="cover">
+      <video
+        className="cover-video"
+        src={coverVideoUrl}
+        poster={coverPosterUrl}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        aria-hidden
+      />
 
-      <header className="brand fade-down">
+      <header className="cover-brand fade-down">
         <img
           className="brand-logo"
           src={logoUrl}
           alt="ALUDO"
-          width={800}
-          height={177}
-          fetchPriority="high"
+          width={400}
+          height={89}
           decoding="async"
         />
       </header>
 
-      <div className="dots" aria-hidden>
-        {[0, 1, 2].map((i) => (
-          <span key={i} className={i <= step ? "dot on" : "dot"} />
-        ))}
-      </div>
+      {step === -1 ? (
+        <div className="cover-center">
+          <div className="cover-head">
+            <h1 className="cover-title">¿Te imaginas que tu mascota pudiera hablar?</h1>
+            <span className="cover-limited">Unidades limitadas</span>
+          </div>
 
-      <section key={step} className="card enter">
-        {step < 2 ? (
-          <form onSubmit={submit} className="stack">
-            <span className="paw bob" aria-hidden>🐾</span>
-            <p className="eyebrow">Pregunta {step + 1} de 2</p>
-            <h1 className="title">
+          <button type="button" className="cover-cta" onClick={() => setStep(0)}>
+            <span className="cover-wa" aria-hidden style={waGlyph} />
+            Quiero el collar para mi perro
+          </button>
+        </div>
+      ) : step < 2 ? (
+        <form key={step} onSubmit={submit} className="cover-center step">
+          <div className="cover-head">
+            <span className="cover-limited">Pregunta {step + 1} de 2</span>
+            <h1 className="cover-title">
               {step === 0 ? (
-                <>¿Cómo se llama tu <em>Peludito</em>?</>
+                <>
+                  ¿Cómo se llama tu <em>Peludito</em>?
+                </>
               ) : (
-                <>¿Qué raza es <em>{n}</em>?</>
+                <>
+                  ¿Qué raza es <em>{n}</em>?
+                </>
               )}
             </h1>
-            <input
-              ref={inputRef}
-              className="field"
-              value={step === 0 ? name : breed}
-              onChange={(e) => (step === 0 ? setName(e.target.value) : setBreed(e.target.value))}
-              placeholder={step === 0 ? "Ej: Luna" : "Ej: Golden Retriever, criollo…"}
-              maxLength={40}
-              autoComplete="off"
-              enterKeyHint="next"
-              aria-label={step === 0 ? "Nombre de tu mascota" : "Raza de tu mascota"}
-            />
+          </div>
+
+          <input
+            ref={inputRef}
+            className="step-field"
+            value={step === 0 ? name : breed}
+            onChange={(e) => (step === 0 ? setName(e.target.value) : setBreed(e.target.value))}
+            placeholder={step === 0 ? "Ej: Luna" : "Ej: Golden Retriever, criollo…"}
+            maxLength={40}
+            autoComplete="off"
+            enterKeyHint="next"
+            aria-label={step === 0 ? "Nombre de tu mascota" : "Raza de tu mascota"}
+          />
+
+          <button
+            type="submit"
+            className="cover-cta"
+            disabled={step === 0 ? !clean(name) : !clean(breed)}
+          >
+            Continuar <span className="step-arrow">→</span>
+          </button>
+
+          {step === 1 && (
             <button
-              type="submit"
-              className="cta"
-              disabled={step === 0 ? !clean(name) : !clean(breed)}
+              type="button"
+              className="step-back"
+              onClick={() => setStep(0)}
+              aria-label="Cambiar el nombre"
             >
-              Continuar <span className="arrow">→</span>
+              ← Cambiar nombre
             </button>
-          </form>
-        ) : (
-          <div className="stack center">
-            <div className="loader" aria-hidden>
-              <span className="ring" />
-              <span className="ring r2" />
-              <span className="loader-paw">🐾</span>
-            </div>
-            <h1 className="title">
+          )}
+        </form>
+      ) : (
+        <div key={step} className="cover-center step">
+          <div className="cover-head">
+            <span className="cover-limited">¡Listo!</span>
+            <h1 className="cover-title step-title-long">
               ¡Escríbenos y descubre cómo <em>{n}</em> podría hablar gracias a este collar!
             </h1>
-            <div className="bar"><span style={{ transform: `scaleX(${progress})` }} /></div>
-            <a href={waUrl} className={progress >= 1 ? "cta wa pulse" : "cta wa"} rel="noopener">
-              Escribir por WhatsApp
-            </a>
           </div>
-        )}
-      </section>
 
-      {step > 0 && (
-        <button
-          className="back"
-          onClick={() => setStep(step === 2 ? 1 : 0)}
-          aria-label={step === 2 ? "Volver a la pregunta anterior" : "Cambiar el nombre"}
-        >
-          ← {step === 2 ? "Volver a la pregunta anterior" : "Cambiar nombre"}
-        </button>
+          <div className="step-bar" aria-hidden>
+            <span style={{ transform: `scaleX(${progress})` }} />
+          </div>
+
+          <a
+            href={waUrl}
+            className={progress >= 1 ? "cover-cta is-ready" : "cover-cta"}
+            rel="noopener"
+          >
+            <span className="cover-wa" aria-hidden style={waGlyph} />
+            Escribir por WhatsApp
+          </a>
+
+          <button
+            type="button"
+            className="step-back"
+            onClick={() => setStep(1)}
+            aria-label="Volver a la pregunta anterior"
+          >
+            ← Volver a la pregunta anterior
+          </button>
+        </div>
       )}
     </main>
   );
